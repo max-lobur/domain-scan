@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "domain-scan.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "domain-scan.name" . }}
+    helm.sh/chart: {{ include "domain-scan.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.scan_schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              env:
+                - name: SCAN_DOMAINS
+                  value: {{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}
+                - name: SKIP_DOMAINS
+                  value: {{ .Values.skip_domains }}
+                - name: AMASS_OPTS
+                  value: {{ .Values.amass_opts }}
+                - name: AQUATONE_OPTS
+                  value: {{ .Values.aquatone_opts }}
+                - name: ROLLBAR_TOKEN
+                  value: {{ .Values.rollbar_token }}
+              resources:
+    {{ toYaml .Values.resources | indent 16 }}
+        {{- with .Values.nodeSelector }}
+          nodeSelector:
+    {{ toYaml . | indent 12 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+    {{ toYaml . | indent 12 }}
+        {{- end }}
