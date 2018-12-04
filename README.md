@@ -8,7 +8,7 @@ Currently based on two projects (shoutout to them!):
 ## Running locally:
 ```
 source ops/env.sh
-docker run -e SCAN_DOMAINS="yourdomain.io" ${DOCKER_TAG}
+docker run -e SCAN_DOMAINS="yourdomain.io,yourdomain.com" ${DOCKER_TAG}
 ```
 ## Running in Kubernetes:
 ```
