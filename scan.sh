@@ -15,18 +15,18 @@ function scan() {
 function report() {
     urls=`cat aquatone_urls.txt | wc -l`
     if [[ ${urls} -ge 0 ]]; then
-        echo "Found volnurable URLs:" | tee -a scan.log
+        echo "Discovered URLs:" | tee -a scan.log
         cat aquatone_urls.txt | tee -a scan.log
         report_rollbar
     else
-        echo "Found no volnurable URLs"
+        echo "Found no URLs"
     fi
 }
 
 function report_rollbar() {
     if [[ ! -z "$ROLLBAR_TOKEN" ]]; then
         echo "Sending rollbar notification"
-        title="Domain Scan has found $urls volnurable URLs!"
+        title="Domain Scan has found $urls public (potentially vulnerable) URLs"
         body="==> Discovered URLs:\n"`cat aquatone_urls.txt`"\n\n==> Scan log:\n"`cat scan.log`
         echo "{\"data\": {\"environment\": \"external\", \"level\": \"warn\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
         curl -H "Content-Type: application/json" --data-binary "@rollbar.json" https://api.rollbar.com/api/1/item/

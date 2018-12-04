@@ -1,5 +1,5 @@
 ## Domain Scanner [![Docker Repository on Quay](https://quay.io/repository/verygoodsecurity/domain-scan/status "Docker Repository on Quay")](https://quay.io/repository/verygoodsecurity/domain-scan)
-Finds opened (potentially volnurable) URLs, and DNS names volnurable to takeover.
+Finds opened (potentially vulnerable) URLs, and DNS names vulnerable to takeover.
 
 Currently based on two projects (shoutout to them!):
 - https://github.com/michenriksen/aquatone
