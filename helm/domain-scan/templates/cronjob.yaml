@@ -9,25 +9,30 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
   schedule: {{ .Values.scan_schedule }}
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       template:
         spec:
+          restartPolicy: Never
+          terminationGracePeriodSeconds: 30
           containers:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               env:
                 - name: SCAN_DOMAINS
-                  value: {{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}
+                  value: "{{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}"
                 - name: SKIP_DOMAINS
-                  value: {{ .Values.skip_domains }}
+                  value: "{{ range $i,$e := .Values.skip_domains }}{{if $i}},{{end}}{{$e}}{{end}}"
                 - name: AMASS_OPTS
-                  value: {{ .Values.amass_opts }}
+                  value: "{{ .Values.amass_opts }}"
                 - name: AQUATONE_OPTS
-                  value: {{ .Values.aquatone_opts }}
+                  value: "{{ .Values.aquatone_opts }}"
+                {{- if .Values.rollbar_token }}
                 - name: ROLLBAR_TOKEN
-                  value: {{ .Values.rollbar_token }}
+                  value: "{{ .Values.rollbar_token }}"
+                {{- end }}
               resources:
     {{ toYaml .Values.resources | indent 16 }}
         {{- with .Values.nodeSelector }}

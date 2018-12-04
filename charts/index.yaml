@@ -3,11 +3,11 @@ entries:
   domain-scan:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-12-04T20:04:42.957799+02:00
+    created: 2018-12-04T20:33:12.932181+02:00
     description: A Helm chart for Kubernetes
-    digest: 31a571a30d4a9fe59d3fc1795ac12f56091cb332092d06abc74e1ad02256f917
+    digest: df3c1d79255c42919b64cbd0a507345478337b553a2cf80a4e274696c51a6389
     name: domain-scan
     urls:
     - domain-scan-0.1.0.tgz
     version: 0.1.0
-generated: 2018-12-04T20:04:42.956384+02:00
+generated: 2018-12-04T20:33:12.931131+02:00

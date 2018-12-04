@@ -2,10 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 scan_schedule: "0 * * * *"
-scan_domains: []
-skip_domains: []
-amass_opts: ""
-aquatone_opts: ""
+scan_domains:
+  - example.com
+skip_domains:
+  - sub.example.com
+amass_opts: "-passive -include-unresolvable -o /dev/stdout -r 1.1.1.1"
+aquatone_opts: "-debug -save-body false -scan-timeout 300 -threads 1"
 rollbar_token: ""
 
 image:
