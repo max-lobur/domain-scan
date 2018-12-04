@@ -27,7 +27,7 @@ function report_rollbar() {
     if [[ ! -z "$ROLLBAR_TOKEN" ]]; then
         echo "Sending rollbar notification"
         title="Domain Scan has found $urls volnurable URLs!"
-        body=`cat scan.log`
+        body="==> Discovered URLs:\n"`cat aquatone_urls.txt`"\n\n==> Scan log:\n"`cat scan.log`
         echo "{\"data\": {\"environment\": \"external\", \"level\": \"warn\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
         curl -H "Content-Type: application/json" --data-binary "@rollbar.json" https://api.rollbar.com/api/1/item/
     fi
