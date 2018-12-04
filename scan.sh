@@ -1,0 +1,37 @@
+#!/usr/bin/env sh
+set -e
+
+AMASS_OPTS=${AMASS_OPTS:-"-passive -include-unresolvable -o /dev/stdout -r 1.1.1.1"}  # https://github.com/OWASP/Amass#using-the-tool-suite
+AMASS_DOMAINS=${AMASS_DOMAINS:-"example.com"}
+AMASS_SKIP_DOMAINS=${AMASS_SKIP_DOMAINS:-"example.example.com"}
+AQUATONE_OPTS=${AQUATONE_OPTS:-"-debug -save-body false -scan-timeout 300 -threads 1"}  # https://github.com/michenriksen/aquatone#command-line-options
+ROLLBAR_TOKEN=${ROLLBAR_TOKEN:-""}
+
+function scan() {
+    echo "Starting scan of '$AMASS_DOMAINS'" | tee -a scan.log
+    amass ${AMASS_OPTS} -d ${AMASS_DOMAINS} -bl ${AMASS_SKIP_DOMAINS} | uniq | aquatone ${AQUATONE_OPTS} | tee -a scan.log
+}
+
+function report() {
+    urls=`cat aquatone_urls.txt | wc -l`
+    if [ ${urls} -ge 0 ]; then
+        echo "Found volnurable URLs:" | tee -a scan.log
+        cat aquatone_urls.txt | tee -a scan.log
+        report_rollbar
+    else
+        echo "Found no volnurable URLs"
+    fi
+}
+
+function report_rollbar() {
+    if [[ ! -z "$ROLLBAR_TOKEN" ]]; then
+        echo "Sending rollbar notification"
+        title="Domain Scan has found $urls volnurable URLs!"
+        body=`cat scan.log`
+        echo "{\"data\": {\"environment\": \"external\", \"level\": \"warn\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
+        curl -H "Content-Type: application/json" --data-binary "@rollbar.json" https://api.rollbar.com/api/1/item/
+    fi
+}
+
+scan
+report
