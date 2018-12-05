@@ -12,7 +12,7 @@ rollbar_token: ""
 
 image:
   repository: quay.io/verygoodsecurity/domain-scan
-  tag: v0.1.5
+  tag: v0.1.6
   pullPolicy: IfNotPresent
 
 nameOverride: ""
