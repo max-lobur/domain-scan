@@ -8,9 +8,9 @@ AQUATONE_OPTS=${AQUATONE_OPTS:-"-debug -save-body false -scan-timeout 300 -threa
 ROLLBAR_TOKEN=${ROLLBAR_TOKEN:-""}
 
 function scan() {
-    echo "Starting amass scan of '$SCAN_DOMAINS'." | tee -a scan.log
+    echo "Starting amass scan of '$SCAN_DOMAINS'.\n" | tee -a scan.log
     amass ${AMASS_OPTS} -d ${SCAN_DOMAINS} -bl ${SKIP_DOMAINS} -o hosts.txt | tee -a scan.log
-    echo "Starting aquatone scan of discovered domains." | tee -a scan.log
+    echo "\n\nStarting aquatone scan of discovered domains.\n" | tee -a scan.log
     touch aquatone_urls.txt
     cat hosts.txt | uniq | aquatone ${AQUATONE_OPTS} | tee -a scan.log
 }
