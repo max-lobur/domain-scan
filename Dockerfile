@@ -8,7 +8,7 @@ RUN apk --no-cache add git openssh \
 
 FROM alpine:latest
 COPY --from=build /go/bin/amass /bin/amass 
-RUN apk --no-cache add chromium curl ca-certificates
+RUN apk --no-cache add chromium curl ca-certificates python3
 # Add https://github.com/michenriksen/aquatone
 ENV AQUATONE_VER="1.4.2"
 ADD https://github.com/michenriksen/aquatone/releases/download/v${AQUATONE_VER}/aquatone_linux_amd64_${AQUATONE_VER}.zip /aquatone/
