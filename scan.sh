@@ -3,7 +3,7 @@ set -e
 
 SCAN_DOMAINS=${SCAN_DOMAINS:-"example.com"}
 SKIP_DOMAINS=${SKIP_DOMAINS:-"example.example.com"}
-AMASS_OPTS=${AMASS_OPTS:-"-passive -include-unresolvable -noalts -src -T 2 -o /dev/stdout -r 1.1.1.1"}  # https://github.com/OWASP/Amass#using-the-tool-suite
+AMASS_OPTS=${AMASS_OPTS:-"-passive -include-unresolvable -noalts -src -T 2 -r 1.1.1.1"}  # https://github.com/OWASP/Amass#using-the-tool-suite
 AQUATONE_OPTS=${AQUATONE_OPTS:-"-debug -save-body false -scan-timeout 300 -threads 1"}  # https://github.com/michenriksen/aquatone#command-line-options
 ROLLBAR_TOKEN=${ROLLBAR_TOKEN:-""}
 
