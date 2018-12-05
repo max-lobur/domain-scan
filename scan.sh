@@ -3,14 +3,14 @@ set -e
 
 SCAN_DOMAINS=${SCAN_DOMAINS:-"example.com"}
 SKIP_DOMAINS=${SKIP_DOMAINS:-"example.example.com"}
-AMASS_OPTS=${AMASS_OPTS:-"-passive -include-unresolvable -noalts -src -T 1 -r 1.1.1.1"}  # https://github.com/OWASP/Amass#using-the-tool-suite
+AMASS_OPTS=${AMASS_OPTS:-"-passive -include-unresolvable -noalts -src -T 0 -r 1.1.1.1"}  # https://github.com/OWASP/Amass#using-the-tool-suite
 AQUATONE_OPTS=${AQUATONE_OPTS:-"-debug -save-body false -scan-timeout 300 -threads 1"}  # https://github.com/michenriksen/aquatone#command-line-options
 ROLLBAR_TOKEN=${ROLLBAR_TOKEN:-""}
 
 function scan() {
-    echo "Starting amass scan of '$SCAN_DOMAINS'" | tee -a scan.log
+    echo "Starting amass scan of '$SCAN_DOMAINS'." | tee -a scan.log
     amass ${AMASS_OPTS} -d ${SCAN_DOMAINS} -bl ${SKIP_DOMAINS} -o hosts.txt | tee -a scan.log
-    echo "Starting aquatone of discovered domains" | tee -a scan.log
+    echo "Starting aquatone scan of discovered domains." | tee -a scan.log
     touch aquatone_urls.txt
     cat hosts.txt | uniq | aquatone ${AQUATONE_OPTS} | tee -a scan.log
 }
