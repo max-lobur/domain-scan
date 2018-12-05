@@ -10,7 +10,7 @@ ROLLBAR_TOKEN=${ROLLBAR_TOKEN:-""}
 function scan() {
     echo "Starting amass scan of '$SCAN_DOMAINS'.\n" | tee -a scan.log
     amass ${AMASS_OPTS} -d ${SCAN_DOMAINS} -o hosts.txt | tee -a scan.log
-    ./filter_domains.py | tee -a scan.log  # amass -bl does not work so have to filter.
+    filter_domains.py | tee -a scan.log  # amass -bl does not work so have to filter.
 
     echo "\n\nStarting aquatone scan of discovered domains.\n" | tee -a scan.log
     touch aquatone_urls.txt

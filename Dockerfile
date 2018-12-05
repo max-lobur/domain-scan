@@ -16,6 +16,7 @@ RUN unzip /aquatone/aquatone_linux_amd64_${AQUATONE_VER}.zip -d /aquatone \
   && ln -s /aquatone/aquatone /bin/aquatone
 
 COPY scan.sh /bin/
+COPY filter_domains.py /bin/
 
 WORKDIR /scan
 ENTRYPOINT [ "scan.sh" ]
