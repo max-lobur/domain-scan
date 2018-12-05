@@ -25,14 +25,18 @@ spec:
                   value: "{{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}"
                 - name: SKIP_DOMAINS
                   value: "{{ range $i,$e := .Values.skip_domains }}{{if $i}},{{end}}{{$e}}{{end}}"
+              {{- if .Values.amass_opts }}
                 - name: AMASS_OPTS
                   value: "{{ .Values.amass_opts }}"
+              {{- end }}
+              {{- if .Values.aquatone_opts }}
                 - name: AQUATONE_OPTS
                   value: "{{ .Values.aquatone_opts }}"
-                {{- if .Values.rollbar_token }}
+              {{- end }}
+              {{- if .Values.rollbar_token }}
                 - name: ROLLBAR_TOKEN
                   value: "{{ .Values.rollbar_token }}"
-                {{- end }}
+              {{- end }}
               resources:
     {{ toYaml .Values.resources | indent 16 }}
         {{- with .Values.nodeSelector }}
