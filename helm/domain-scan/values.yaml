@@ -48,7 +48,7 @@ nginx:
 
   path: /usr/share/nginx/html
 
-  image: nginx
+  image: nginx:1.7.9
 
   dns:
     hostname: domain-scan.verygoodsecurity.io

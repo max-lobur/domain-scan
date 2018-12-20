@@ -16,13 +16,17 @@ spec:
         spec:
           restartPolicy: Never
           terminationGracePeriodSeconds: 30
+          volumes:
+            - name: domain-scan-pvc
+              persistentVolumeClaim:
+                claimName: "{{ .Values.pvc.name }}"
           containers:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               volumeMounts:
-                name: domain-scan-pvc
-                mountPath: /scan
+                - mountPath: "/scan"
+                  name: domain-scan-pvc
               env:
                 - name: SCAN_DOMAINS
                   value: "{{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}"

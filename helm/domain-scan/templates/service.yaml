@@ -1,5 +1,5 @@
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: {{ .Values.nginx.appName }}
   namespace: {{ .Values.nginx.namespace }}
@@ -10,5 +10,5 @@ spec:
     - protocol: "TCP"
       name: http
       port: 80
-      targetPort: "{{ .Values.nginx.port }}"
+      targetPort: 80
   type: ClusterIP
