@@ -1,29 +1,25 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: "{{ .Values.nginx.appName }}"
+  name: nginx
   namespace: "{{ .Values.nginx.namespace }}"
 spec:
-  replicas: "{{ .Values.nginx.replicaCount }}"
+  replicas: 1
   template: 
     metadata:
       labels:
-        app: "{{ .Values.nginx.appName }}"
+        app: nginx
     spec:
       containers:
-      - name: "{{ .Values.nginx.appName }}"
+      - name: nginx
         image: "{{ .Values.nginx.image }}"
         volumeMounts:
-          name: "{{ .Values.pvc.name }}"
-          mountPath: "{{ .Values.pvc.path }}"
-          #subPath: /usr/share/nginx/html
+          name: domain-scan-pvc
+          mountPath: /usr/share/nginx/html
           readOnly: true
         env:
-        - name: NGINX_HOST
-          value: "{{ .Values.nginx.dns.hostname }}"
         - name: NGINX_PORT
-          value: "{{ .Values.nginx.port }}"
-        command: ['sh', '-c', "exec nginx -g 'daemon off;'"]
+          value: 80
         ports:
-        - containerPort: "{{ .Values.nginx.port }}"
-          name: service
+        - containerPort: 80
+          name: http

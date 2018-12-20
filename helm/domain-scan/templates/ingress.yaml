@@ -2,10 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: nginx
-    certmanager.k8s.io/acme-challenge-type: {{ .Values.nginx.certmanager.challengeProvider }}  
-    certmanager.k8s.io/cluster-issuer: {{ .Values.nginx.certmanager.issuer }}
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/base-url-scheme: http
   labels:
     app: {{ .Values.nginx.appName }}
@@ -18,7 +14,7 @@ spec:
       paths:
       - backend:
           serviceName: {{ .Values.nginx.appName }}
-          servicePort: 443
+          servicePort: http
   tls:
   - hosts:
     - {{ .Values.nginx.dns.hostname }}
