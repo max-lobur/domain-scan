@@ -20,6 +20,9 @@ spec:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
+              volumeMounts:
+                name: "{{ .Values.pvc.name }}"
+                mountPath: "{{ .Values.pvc.path }}"
               env:
                 - name: SCAN_DOMAINS
                   value: "{{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}"

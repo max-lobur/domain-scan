@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.nginx.appName }}
+  namespace: {{ .Values.nginx.namespace }}
+spec:
+  selector:
+    app: {{ .Values.nginx.appName }}
+  ports:
+    - protocol: "TCP"
+      name: https
+      port: 443
+      targetPort: "{{ .Values.nginx.port }}"
+  type: ClusterIP

@@ -1,0 +1,29 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: "{{ .Values.nginx.appName }}"
+  namespace: "{{ .Values.nginx.namespace }}"
+spec:
+  replicas: "{{ .Values.nginx.replicaCount }}"
+  template: 
+    metadata:
+      labels:
+        app: "{{ .Values.nginx.appName }}"
+    spec:
+      containers:
+      - name: "{{ .Values.nginx.appName }}"
+        image: "{{ .Values.nginx.image }}"
+        volumeMounts:
+          name: "{{ .Values.pvc.name }}"
+          mountPath: "{{ .Values.pvc.path }}"
+          #subPath: /usr/share/nginx/html
+          readOnly: true
+        env:
+        - name: NGINX_HOST
+          value: "{{ .Values.nginx.dns.hostname }}"
+        - name: NGINX_PORT
+          value: "{{ .Values.nginx.port }}"
+        command: ['sh', '-c', "exec nginx -g 'daemon off;'"]
+        ports:
+        - containerPort: "{{ .Values.nginx.port }}"
+          name: service

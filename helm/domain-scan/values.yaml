@@ -1,9 +1,10 @@
 # Default values for domain-scan.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-scan_schedule: "0 * * * *"
+
+scan_schedule: "1 * * * *"
 scan_domains:
-  - example.com
+  - andyhaskell.github.io
 skip_domains:
   - sub.example.com
 amass_opts: ""
@@ -12,8 +13,8 @@ rollbar_token: ""
 
 image:
   repository: quay.io/verygoodsecurity/domain-scan
-  tag: v0.2.1
-  pullPolicy: IfNotPresent
+  tag: v0.2.1.mixua
+  pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
@@ -33,3 +34,27 @@ resources: {}
 nodeSelector: {}
 
 tolerations: []
+
+pvc:
+  name: domain-scan-pvc
+  namespace: mixua
+  path: /scan
+
+nginx:
+  replicaCount: 1
+
+  appName: nginx
+  namespace: mixua
+
+  path: /usr/share/nginx/html
+
+  image: nginx
+
+  dns:
+    hostname: domain-scan.verygoodsecurity.io
+  
+  port: 80
+
+  certmanager:
+    issuer: letsencrypt-prod
+    challengeProvider: http01

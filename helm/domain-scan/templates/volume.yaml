@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ .Values.pvc.name }}"
+  namespace: "{{ .Values.pvc.namespace }}"
+  annotations:
+    volume.beta.kubernetes.io/storage-class: default
+    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/aws-ebs
+spec:
+  accessModes:
+  - ReadWrite
+  resources:
+    requests:
+      storage: 10Gi
