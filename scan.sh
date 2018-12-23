@@ -10,12 +10,18 @@ AQUATONE_OPTS=${AQUATONE_OPTS:-"-debug -save-body false -scan-timeout 300 -threa
 ROLLBAR_TOKEN=${ROLLBAR_TOKEN:-""}
 
 function dirs() {
-    mkdir -p $AQUATONE_REPO/$DATE
-    mv aquatone_report.html $AQUATONE_REPO/$DATE/index.html
-    mv screenshots $AQUATONE_REPO/$DATE/screenshots
-    mv html $AQUATONE_REPO/$DATE/html
-    mv headers $AQUATONE_REPO/$DATE/headers
-    find $AQUATONE_REPO/* -type d -mtime +10 | xargs rm -rf
+    if [ ! -f aquatone_report.html ]; then
+        echo "Aqatone report not found!"
+    else
+        mkdir -p $AQUATONE_REPO/$DATE
+        if [ -f $AQUATONE_REPO/$DATE/index.html ]; then
+            echo "Report already exists!"
+            rm -rf $AQUATONE_REPO/$DATE/*
+        fi
+        cat aquatone_report.html > $AQUATONE_REPO/$DATE/index.html
+        mv -f headers html screenshots $AQUATONE_REPO/$DATE
+        find $AQUATONE_REPO/* -type d -mtime +10 | xargs rm -rf
+    fi
 }
 
 function scan() {
@@ -34,6 +40,7 @@ function report() {
         echo "Discovered URLs:" | tee -a scan.log
         cat aquatone_urls.txt | tee -a scan.log
         report_rollbar
+        rm -rf *.*
     else
         echo "Found no URLs"
     fi
