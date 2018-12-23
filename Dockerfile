@@ -1,7 +1,8 @@
 
 # Forked from https://github.com/OWASP/Amass/blob/master/Dockerfile
 FROM golang:alpine as build
-RUN apk --no-cache add git openssh \ 
+RUN apk --no-cache add git openssh \
+  && apk -U add findutils \ 
   && mkdir -p ~/.ssh/ \
   && echo > ~/.ssh/known_hosts \
   && go get -u github.com/OWASP/Amass/...

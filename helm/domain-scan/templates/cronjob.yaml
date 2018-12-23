@@ -25,7 +25,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               volumeMounts:
-                - mountPath: "/scan"
+                - mountPath: "/scan/reports"
                   name: domain-scan-pvc
               env:
                 - name: SCAN_DOMAINS
