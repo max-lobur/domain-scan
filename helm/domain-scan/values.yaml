@@ -6,7 +6,7 @@ scan_schedule: "0 3 * * *"
 scan_domains:
   - andyhaskell.github.io
 skip_domains:
-  - sub.example.com
+  - ua.fm
 amass_opts: ""
 aquatone_opts: ""
 rollbar_token: ""
