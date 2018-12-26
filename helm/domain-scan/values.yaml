@@ -4,7 +4,7 @@
 
 scan_schedule: "0 3 * * *"
 scan_domains:
-  - andyhaskell.github.io
+  - example.com
 skip_domains:
   - ua.fm
 amass_opts: ""
@@ -38,6 +38,7 @@ tolerations: []
 pvc:
   name: domain-scan-pvc
   namespace: mixua
+  provisioner: kubernetes.io/aws-ebs
   size: 10Gi
 
 nginx:

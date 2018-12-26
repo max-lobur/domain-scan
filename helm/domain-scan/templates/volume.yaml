@@ -5,7 +5,7 @@ metadata:
   namespace: "{{ .Values.pvc.namespace }}"
   annotations:
     volume.beta.kubernetes.io/storage-class: default
-    volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/aws-ebs
+    volume.beta.kubernetes.io/storage-provisioner: "{{ .Values.pvc.provisioner }}"
 spec:
   accessModes:  
   - ReadWriteOnce

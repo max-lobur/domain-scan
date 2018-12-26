@@ -58,13 +58,23 @@ function report_rollbar() {
     if [[ ! -z "$ROLLBAR_TOKEN" ]]; then
         echo "Sending rollbar notification"
         if [ ! -f report.log ]; then
-            title="Domain Scan has found $urls public (potentially vulnerable) URLs"
-            body="==> Discovered URLs:\n"`cat aquatone_urls.txt`"\n\n==> Scan log:\n"`cat scan.log`
-        else            
-            title="Domain Scan has found $urls public (potentially vulnerable) URLs, takeover report: https://$REPORT_URL/$DATE"
-            body="==> Discovered URLs:\n"`cat aquatone_urls.txt`"\n\n==> Report URL:\n"`cat report.log`
+            mess=" "
+            file="scan.log"
+            warn_level="warn"
+        else
+            if grep -i "Domain Takeover" index.html 
+            then
+                mess=", found possible domain takeover, report here: https://$REPORT_URL/$DATE"
+                warn_level="critical"
+            else
+                mess=", report here: https://$REPORT_URL/$DATE"
+                warn_level="warn"
+            fi            
+            file="report.log"
         fi
-        echo "{\"data\": {\"environment\": \"external\", \"level\": \"warn\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
+        title="Domain Scan has found $urls public (potentially vulnerable) URLs$mess"
+        body="==> Discovered URLs:\n"`cat aquatone_urls.txt`"\n\n==> Scan log:\n"`cat $file`
+        echo "{\"data\": {\"environment\": \"external\", \"level\": \"$warn_level\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
         curl -H "Content-Type: application/json" --data-binary "@rollbar.json" https://api.rollbar.com/api/1/item/
     fi
 }
