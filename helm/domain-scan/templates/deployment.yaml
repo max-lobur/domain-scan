@@ -17,6 +17,12 @@ spec:
         - name: domain-scan-pvc
           persistentVolumeClaim:
             claimName: "{{ .Values.pvc.name }}"
+        - name: default
+          configMap:
+            name: nginx-config-map
+            items:
+            - key: default
+              path: default.conf 
       containers:
       - name: nginx
         image: {{ .Values.nginx.image }}
@@ -24,8 +30,11 @@ spec:
           - mountPath: "/usr/share/nginx/html"
             name: domain-scan-pvc
             readOnly: true
+          - mountPath: /etc/nginx/conf.d
+            name: default
         ports:
         - containerPort: 80
           name: http
-        command: ["/bin/sh"]
-        args: ["-c", "/bin/sed -i '/index.html /a autoindex on;' /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+   
+#        command: ["/bin/sh"]
+#        args: ["-c", "/bin/sed -i '/index.html /a autoindex on;' /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]

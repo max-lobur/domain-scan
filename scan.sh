@@ -24,27 +24,27 @@ function start() {
 
 function clelanup_reports() {
     find $AQUATONE_REPO/* -type d -mtime +10 | xargs rm -rf
-    rm -rf *.txt *.log rollbar.json
+    rm -rf rollbar.json
 }
 
 function scan() {
-    echo "Starting amass scan of '$SCAN_DOMAINS'.\n" | tee -a scan.log
-    amass ${AMASS_OPTS} -d ${SCAN_DOMAINS} -o hosts.txt | tee -a scan.log
-    filter_domains.py | tee -a scan.log  # amass -bl does not work so have to filter.
-    echo "\n\nStarting aquatone scan of discovered domains.\n" | tee -a scan.log
+    echo "Starting amass scan of '$SCAN_DOMAINS'.\n" | tee -a scan.txt
+    amass ${AMASS_OPTS} -d ${SCAN_DOMAINS} -o hosts.txt | tee -a scan.txt
+    filter_domains.py | tee -a scan.txt  # amass -bl does not work so have to filter.
+    echo "\n\nStarting aquatone scan of discovered domains.\n" | tee -a scan.txt
     touch aquatone_urls.txt
-    cat hosts.txt | uniq | aquatone ${AQUATONE_OPTS} | tee -a scan.log
+    cat hosts.txt | uniq | aquatone ${AQUATONE_OPTS} | tee -a scan.txt
 }
 
 function report() {
     urls=`cat aquatone_urls.txt | wc -l`
     if [[ ${urls} -ge 0 ]]; then
         if [ ! -f aquatone_report.html ]; then
-            echo "Discovered URLs:" | tee -a scan.log
-            cat aquatone_urls.txt | tee -a scan.log
+            echo "Discovered URLs:" | tee -a scan.txt
+            cat aquatone_urls.txt | tee -a scan.txt
         else
-            mv aquatone_report.html index.html
-            echo "All recent reports here: https://$REPORT_URL \n" > report.log
+            mv aquatone_report.html report.html
+            echo "All recent reports here: https://$REPORT_URL \n" > report.txt
         fi
         report_rollbar
         clelanup_reports
@@ -57,20 +57,20 @@ function report() {
 function report_rollbar() {
     if [[ ! -z "$ROLLBAR_TOKEN" ]]; then
         echo "Sending rollbar notification"
-        if [ ! -f report.log ]; then
+        if [ ! -f report.txt ]; then
             mess=" "
-            file="scan.log"
+            file="scan.txt"
             warn_level="warn"
         else
-            if grep -i "Domain Takeover" index.html 
+            if grep -i "Domain Takeover" report.html 
             then
-                mess=", found possible domain takeover, report here: https://$REPORT_URL/$DATE"
+                mess=", found possible domain takeover, report here: https://$REPORT_URL/$DATE/report.html"
                 warn_level="critical"
             else
                 mess=", report here: https://$REPORT_URL/$DATE"
                 warn_level="warn"
             fi            
-            file="report.log"
+            file="report.txt"
         fi
         title="Domain Scan has found $urls public (potentially vulnerable) URLs$mess"
         body="==> Discovered URLs:\n"`cat aquatone_urls.txt`"\n\n==> Scan log:\n"`cat $file`

@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-scan_schedule: "0 3 * * *"
+scan_schedule: "05 15 * * *"
 scan_domains:
   - example.com
 skip_domains:
@@ -39,6 +39,7 @@ pvc:
   name: domain-scan-pvc
   namespace: mixua
   provisioner: kubernetes.io/aws-ebs
+  class: default
   size: 10Gi
 
 nginx:

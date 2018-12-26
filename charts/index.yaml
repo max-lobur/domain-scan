@@ -3,16 +3,16 @@ entries:
   domain-scan:
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-12-24T21:26:02.552309+02:00
+    created: 2018-12-26T17:00:56.001117+02:00
     description: A Helm chart for Kubernetes
-    digest: 9cd003d1bf46cd04a85080af8874c3ee38d04d6ddb793c209254739e3f399fa3
+    digest: 432ef7c6de4d661025bbf1b7f039877e4fc4cc16f9782ab199c5b9c6c86ebec9
     name: domain-scan
     urls:
     - domain-scan-0.2.0.tgz
     version: 0.2.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-12-24T21:26:02.552019+02:00
+    created: 2018-12-26T17:00:56.000755+02:00
     description: A Helm chart for Kubernetes
     digest: fd8e618d5c941b049b7eb951283d6bc16f0a59df636366a5ac6db96d5f6e37db
     name: domain-scan
@@ -21,7 +21,7 @@ entries:
     version: 0.1.1
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-12-24T21:26:02.55171+02:00
+    created: 2018-12-26T17:00:56.000036+02:00
     description: A Helm chart for Kubernetes
     digest: cef1ec952c1066b0a5c4af08e0aaa6341e8f4a32a8f764838cb417a9ff764351
     name: domain-scan
@@ -30,11 +30,11 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: "1.0"
-    created: 2018-12-24T21:26:02.551406+02:00
+    created: 2018-12-26T17:00:55.999484+02:00
     description: A Helm chart for Kubernetes
     digest: 7b316a6538bfe7a419a39583e319cca20b953d61a8774df1e8c1270224ceebb3
     name: domain-scan
     urls:
     - domain-scan-0.1.0.mixua.tgz
     version: 0.1.0.mixua
-generated: 2018-12-24T21:26:02.550583+02:00
+generated: 2018-12-26T17:00:55.997876+02:00
