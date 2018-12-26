@@ -35,6 +35,3 @@ spec:
         ports:
         - containerPort: 80
           name: http
-   
-#        command: ["/bin/sh"]
-#        args: ["-c", "/bin/sed -i '/index.html /a autoindex on;' /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]

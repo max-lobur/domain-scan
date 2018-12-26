@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-scan_schedule: "05 15 * * *"
+scan_schedule: "20 19 * * *"
 scan_domains:
   - example.com
 skip_domains:
@@ -13,8 +13,8 @@ rollbar_token: ""
 
 image:
   repository: quay.io/verygoodsecurity/domain-scan
-  tag: v0.2.1.mixua
-  pullPolicy: Always
+  tag: v0.3.0
+  pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
