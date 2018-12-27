@@ -48,10 +48,10 @@ function report_rollbar() {
         this_report_page="https://$REPORTS_HOSTNAME/$DATE/aquatone_report.html"
 
         level="warning"
-        title="Domain Scan has found $urls public (potentially vulnerable) URLs. Report: ${this_report_page} (private IP)."
+        title="Domain Scan has found $urls public (potentially vulnerable) URLs. Report: ${this_report_page}."
         if grep -i "takeover" aquatone_report.html; then
             level="error"
-            title="Domain Scan has found a takeover threat! Report: $this_report_page (private IP)."
+            title="Domain Scan has found a domain takeover threat! Report: ${this_report_page}."
         fi
 
         body="Recent reports: https://$REPORTS_HOSTNAME/"
