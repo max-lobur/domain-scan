@@ -3,21 +3,19 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx-internal
-    certmanager.k8s.io/acme-challenge-type: {{ .Values.nginx.certmanager.challengeProvider }}  
-    certmanager.k8s.io/cluster-issuer: {{ .Values.nginx.certmanager.issuer }}
+    certmanager.k8s.io/acme-challenge-type: {{ .Values.certmanager.challengeProvider }}
+    certmanager.k8s.io/cluster-issuer: {{ .Values.certmanager.issuer }}
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/base-url-scheme: http
-  labels:
-    app: {{ .Values.nginx.appName }}
-  name: {{ .Values.nginx.appName }}
-  namespace: {{ .Values.nginx.namespace }}
+  name: domain-scan
+  namespace: {{ .Values.namespace }}
 spec:
   rules:
   - host: {{ .Values.reports_hostname }}
     http:
       paths:
       - backend:
-          serviceName: {{ .Values.nginx.appName }}
+          serviceName: domain-scan
           servicePort: http
   tls:
   - hosts:

@@ -22,8 +22,8 @@ spec:
                 claimName: "{{ .Values.pvc.name }}"
           containers:
             - name: {{ .Chart.Name }}
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              image: "{{ .Values.scan_image.repository }}:{{ .Values.scan_image.tag }}"
+              imagePullPolicy: {{ .Values.scan_image.pullPolicy }}
               volumeMounts:
                 - mountPath: "/scan/reports"
                   name: domain-scan-pvc
@@ -44,10 +44,8 @@ spec:
                 - name: ROLLBAR_TOKEN
                   value: "{{ .Values.rollbar_token }}"
               {{- end }}
-              {{- if .Values.reports_hostname }}
                 - name: REPORTS_HOSTNAME
                   value: "{{ .Values.reports_hostname }}"
-              {{- end }}
               resources:
     {{ toYaml .Values.resources | indent 16 }}
         {{- with .Values.nodeSelector }}

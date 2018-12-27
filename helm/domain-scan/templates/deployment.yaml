@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: nginx
-  namespace: "{{ .Values.nginx.namespace }}"
+  namespace: "{{ .Values.namespace }}"
 spec:
   selector:
     matchLabels:
@@ -25,7 +25,7 @@ spec:
               path: default.conf 
       containers:
       - name: nginx
-        image: {{ .Values.nginx.image }}
+        image: nginx:1.7.9
         volumeMounts:
           - mountPath: "/usr/share/nginx/html"
             name: domain-scan-pvc

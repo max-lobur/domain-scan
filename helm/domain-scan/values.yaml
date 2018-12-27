@@ -2,18 +2,21 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+namespace: domain-scan
+
 scan_schedule: "0 13 * * *"
+
 scan_domains:
   - example.com
 skip_domains:
-  - ua.fm
+  - sub.example.com
 amass_opts: ""
 aquatone_opts: ""
 rollbar_token: ""
 
-image:
+scan_image:
   repository: quay.io/verygoodsecurity/domain-scan
-  tag: v0.3.0
+  tag: 0.3.2
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -35,21 +38,14 @@ nodeSelector: {}
 
 tolerations: []
 
-reports_hostname: "domain.io"
+reports_hostname: "scans.domain.io"
 
 pvc:
   name: domain-scan-pvc
-  namespace: mixua
   provisioner: kubernetes.io/aws-ebs
   class: default
   size: 10Gi
 
-nginx:
-  appName: nginx
-  namespace: mixua
-
-  image: nginx:1.7.9
-
-  certmanager:
-    issuer: letsencrypt-prod
-    challengeProvider: http01
+certmanager:
+  issuer: ""
+  challengeProvider: ""

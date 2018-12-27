@@ -24,6 +24,7 @@ function scan() {
     echo "Starting amass scan of '$SCAN_DOMAINS'.\n" | tee -a scan.log.txt
     amass ${AMASS_OPTS} -d ${SCAN_DOMAINS} -o hosts.txt | tee -a scan.log.txt
     filter_domains.py | tee -a scan.log.txt  # amass -bl does not work so have to filter.
+
     echo "\n\nStarting aquatone scan of discovered domains.\n" | tee -a scan.log.txt
     touch aquatone_urls.txt aquatone_report.html
     cat hosts.txt | uniq | aquatone ${AQUATONE_OPTS} | tee -a scan.log.txt
@@ -34,9 +35,8 @@ function report() {
     if [[ ${urls} -gt 0 ]]; then
         echo "Discovered URLs:" | tee -a scan.log.txt
         cat aquatone_urls.txt | tee -a scan.log.txt
-        sed -i '1 i\All recent reports here: https://$REPORTS_HOSTNAME \n' scan.log.txt
-        report_rollbar
         chmod -R go=rX,u=rwX ./*
+        report_rollbar
     else
         echo "Found no URLs" | tee -a scan.log.txt
     fi
@@ -45,18 +45,22 @@ function report() {
 function report_rollbar() {
     if [[ ! -z "$ROLLBAR_TOKEN" ]]; then
         echo "Sending rollbar notification"
-        warn_level="warning"
-        report_page=https://$REPORTS_HOSTNAME/$DATE/aquatone_report.html
-        title="Domain Scan has found $urls public (potentially vulnerable) URLs. Report: ${report_page}"
-        body="Recent reports: https://$REPORTS_HOSTNAME"
+        this_report_page="https://$REPORTS_HOSTNAME/$DATE/aquatone_report.html"
+
+        level="warning"
+        title="Domain Scan has found $urls public (potentially vulnerable) URLs. Report: ${this_report_page} (private IP)."
         if grep -i "takeover" aquatone_report.html; then
-            title="Domain Scan has found takeover threat! Report: $report_page (private IP)."
-            warn_level="error"
+            level="error"
+            title="Domain Scan has found a takeover threat! Report: $this_report_page (private IP)."
         fi
-        echo "{\"data\": {\"environment\": \"external\", \"level\": \"$warn_level\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
+
+        body="Recent reports: https://$REPORTS_HOSTNAME/"
+
+        echo "{\"data\": {\"environment\": \"external\", \"level\": \"$level\", \"title\": \"$title\", \"body\": {\"message\": {\"body\": \"$body\"}}}, \"access_token\": \"$ROLLBAR_TOKEN\"}" > rollbar.json
         curl -H "Content-Type: application/json" --data-binary "@rollbar.json" https://api.rollbar.com/api/1/item/
     fi
 }
+
 
 mk_scan_dir
 scan
