@@ -17,7 +17,7 @@ function mk_scan_dir() {
 }
 
 function cleanup_scans() {
-    find $AQUATONE_REPO/* -type d -mtime +10 | xargs rm -rf
+    find $AQUATONE_REPO/* -type d -mtime +90 | xargs rm -rf
 }
 
 function scan() {
