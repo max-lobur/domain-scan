@@ -16,10 +16,17 @@ spec:
         spec:
           restartPolicy: Never
           terminationGracePeriodSeconds: 30
+          volumes:
+            - name: domain-scan-pvc
+              persistentVolumeClaim:
+                claimName: "{{ .Values.pvc.name }}"
           containers:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
+              volumeMounts:
+                - mountPath: "/scan/reports"
+                  name: domain-scan-pvc
               env:
                 - name: SCAN_DOMAINS
                   value: "{{ range $i,$e := .Values.scan_domains }}{{if $i}},{{end}}{{$e}}{{end}}"
@@ -36,6 +43,10 @@ spec:
               {{- if .Values.rollbar_token }}
                 - name: ROLLBAR_TOKEN
                   value: "{{ .Values.rollbar_token }}"
+              {{- end }}
+              {{- if .Values.reports_hostname }}
+                - name: REPORTS_HOSTNAME
+                  value: "{{ .Values.reports_hostname }}"
               {{- end }}
               resources:
     {{ toYaml .Values.resources | indent 16 }}
