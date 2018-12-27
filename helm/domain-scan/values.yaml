@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-scan_schedule: "20 19 * * *"
+scan_schedule: "0 13 * * *"
 scan_domains:
   - example.com
 skip_domains:
@@ -35,6 +35,8 @@ nodeSelector: {}
 
 tolerations: []
 
+reports_hostname: "domain.io"
+
 pvc:
   name: domain-scan-pvc
   namespace: mixua
@@ -47,9 +49,6 @@ nginx:
   namespace: mixua
 
   image: nginx:1.7.9
-
-  dns:
-    hostname: domain-scan.verygoodsecurity.io
 
   certmanager:
     issuer: letsencrypt-prod

@@ -13,10 +13,6 @@ data:
             index  index.html index.htm;
             autoindex on;
         }
-        
-        location ~* \.(gif|jpg|png)$ {
-            expires 30d;
-        }
 
         error_page   500 502 503 504  /50x.html;
         location = /50x.html {

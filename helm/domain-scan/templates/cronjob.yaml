@@ -44,6 +44,10 @@ spec:
                 - name: ROLLBAR_TOKEN
                   value: "{{ .Values.rollbar_token }}"
               {{- end }}
+              {{- if .Values.reports_hostname }}
+                - name: REPORTS_HOSTNAME
+                  value: "{{ .Values.reports_hostname }}"
+              {{- end }}
               resources:
     {{ toYaml .Values.resources | indent 16 }}
         {{- with .Values.nodeSelector }}
