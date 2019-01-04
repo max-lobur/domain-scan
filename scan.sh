@@ -36,6 +36,10 @@ function report() {
         echo "Discovered URLs:" | tee -a scan.log.txt
         cat aquatone_urls.txt | tee -a scan.log.txt
         chmod -R go=rX,u=rwX ./*
+        sed -i -e 's/<link.*/<link href="https:\/\/stackpath.bootstrapcdn.com\/bootswatch\/4.1.3\/darkly\/bootstrap.min.css" \
+rel="stylesheet" integrity="sha384-w+yWASP3zYNxxvwoQBD5fUSc1tctKq4KUiZzxgkBSJACiUp+IbweVKvsEhMI+gz7" \
+crossorigin="anonymous">/g' aquatone_report.html 
+# We shuld delete the hack above when here: https://github.com/michenriksen/aquatone/issues/155 the source of stylesheet will be fixed!
         report_rollbar
     else
         echo "Found no URLs" | tee -a scan.log.txt
