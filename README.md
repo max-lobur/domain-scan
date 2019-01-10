@@ -12,7 +12,7 @@ docker run -e SCAN_DOMAINS="yourdomain.io,yourdomain.com" ${DOCKER_TAG}
 ```
 ## Running in Kubernetes:
 ```
-helm install charts/domain-scan-0.1.0.tgz --name domain-scan --namespace=domain-scan -f path/to/your/values.yaml
+helm install charts/domain-scan-0.2.2.tgz --name domain-scan --namespace=domain-scan -f path/to/your/values.yaml
 ```
 
 ## Contributing:
