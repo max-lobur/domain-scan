@@ -12,7 +12,8 @@ skip_domains:
   - sub.example.com
 amass_opts: ""
 aquatone_opts: ""
-rollbar_token: ""
+#rollbar_token: "<token>"
+#healthchecks_key: "<token>" # https://hc-ping.com/
 
 scan_image:
   repository: quay.io/verygoodsecurity/domain-scan
