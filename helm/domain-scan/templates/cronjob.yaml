@@ -19,13 +19,12 @@ spec:
           {{- if .Values.healthchecks_key }}
           initContainers:
             - name: init-ping
-              image: busybox
+              image: busybox:1.27.2
               command:
-                - wget
-              args: 
-                - "https://hc-ping.com/{{ .Values.healthchecks_key }}"
-                - "-O"
-                - "/dev/null"
+              - wget 
+              - https://hc-ping.com/{{ .Values.healthchecks_key }}"
+              - -O
+              - /dev/null
           {{- end }}
           volumes:
             - name: domain-scan-pvc
