@@ -16,6 +16,16 @@ spec:
         spec:
           restartPolicy: Never
           terminationGracePeriodSeconds: 30
+          {{- if .Values.healthchecks_key }}
+          initContainers:
+            - name: init-ping
+              image: busybox:1.27.2
+              command:
+              - wget 
+              - https://hc-ping.com/{{ .Values.healthchecks_key }}"
+              - -O
+              - /dev/null
+          {{- end }}
           volumes:
             - name: domain-scan-pvc
               persistentVolumeClaim:
