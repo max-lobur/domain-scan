@@ -16,6 +16,16 @@ spec:
         spec:
           restartPolicy: Never
           terminationGracePeriodSeconds: 30
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - nginx
+                topologyKey: "kubernetes.io/hostname"
           volumes:
             - name: domain-scan-pvc
               persistentVolumeClaim:
