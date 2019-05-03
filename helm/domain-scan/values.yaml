@@ -17,7 +17,7 @@ aquatone_opts: ""
 
 scan_image:
   repository: quay.io/verygoodsecurity/domain-scan
-  tag: 0.3.4
+  tag: 0.3.5
   pullPolicy: IfNotPresent
 
 nameOverride: ""

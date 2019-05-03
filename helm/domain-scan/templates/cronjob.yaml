@@ -16,16 +16,16 @@ spec:
         spec:
           restartPolicy: Never
           terminationGracePeriodSeconds: 30
-          {{- if .Values.healthchecks_key }}
-          initContainers:
-            - name: init-ping
-              image: busybox:1.27.2
-              command:
-              - wget 
-              - https://hc-ping.com/{{ .Values.healthchecks_key }}"
-              - -O
-              - /dev/null
-          {{- end }}
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - nginx
+                topologyKey: "kubernetes.io/hostname"
           volumes:
             - name: domain-scan-pvc
               persistentVolumeClaim:
@@ -54,6 +54,10 @@ spec:
                 - name: ROLLBAR_TOKEN
                   value: "{{ .Values.rollbar_token }}"
               {{- end }}
+              {{- if .Values.healthchecks_key }}  
+                - name: HEALTHCHECKS_KEY
+                  value: "{{ .Values.healthchecks_key }}"
+              {{- end }} 
                 - name: REPORTS_HOSTNAME
                   value: "{{ .Values.reports_hostname }}"
               resources:
